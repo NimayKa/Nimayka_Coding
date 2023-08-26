@@ -1,7 +1,7 @@
 # Nimayka_Coding
 Data Vitualization(DV), Data Structure and Algorithm(DSA) and Applied Programming for Data Analytics(APDA)
 
-Hi My Name is NimayKa, im a student of politeknik waking data analytics course.
+Hi My Name is NimayKa, im a student of politeknik taking data analytics course.
 
 
 Welcome my Repo on Coding, this is a place where i put my code online. 
