@@ -36,8 +36,8 @@ def delete_menu(my_list):
 def search_menu(my_list):
     print("\nSearch Menu")
     print("1. Search Item")
-    print("2. Search Index")
-    print("3. Search by Index")
+    print("2. Search Index") #search index by items
+    print("3. Search by Index") #search items by index
     print("4. Back")
     num = int(input("Enter your choice: "))
     
@@ -52,6 +52,11 @@ def search_menu(my_list):
         my_list.searchByIndex(index_to_search)
 
 my_list = DCLL.DoublyCircularLinkedList()
+my_list.addToFront(1)
+my_list.addToFront(5)
+my_list.addToFront(2)
+my_list.addToFront(6)
+my_list.addToFront(3)
 
 while True:
     display_menu()
@@ -66,7 +71,7 @@ while True:
     elif choice == 4:
         print(f"Current size of the list: {my_list.getSize()}")
     elif choice == 5:
-        my_list.size_limit()
+        print (f"Current size limit: {my_list.limitChecker()}")
     elif choice == 6:
         my_list.display()
         print ('\n')

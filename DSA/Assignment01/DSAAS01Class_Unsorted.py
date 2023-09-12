@@ -117,7 +117,7 @@ class DoublyCircularLinkedList:
 
         while True:
             if current.data == item:
-                return True
+                return print('Search Items is Found')
 
             current = current.next
             if current == self.head:
@@ -136,35 +136,51 @@ class DoublyCircularLinkedList:
 
         while True:
             if current.data == item:
-                return index
-
+                return print(f'Search Item in Index : {index}')
             current = current.next
             index += 1
             if current == self.head:
-                break
-        return None
+                return print('Item you try to search is not in the list')
+        
+        return
     
-    def binary_search (a_list, its):
+    def searchByIndex1 (self, item):
+        if self.head is None:
+            print("Empty list. Item not found.")
+            return None
+        
+        current = self.head
+        index = 0
+        list = []
+        
+        while True:
+            list.append(current.data)
+            current = current.next
+            index+=1
+            
+            if current == self.head:
+                break
+            
+        length = self.getSize()
         low = 0
-        high = len(a_list) - 1
-
+        high = length - 1
         found = False
-        print ("\n")
-        while low  <= high  and not found:
-
-            midpoint = (high + low) // 2
-            print (midpoint)
-            print ("Midpoint",a_list[midpoint])
-            if a_list[midpoint] == its:
-                found = True
+        
+        while low<= high:
+            midpoint = (low + high) // 2
+            if list[midpoint]<item:
+                low = midpoint + 1
             else:
-                if its < a_list[midpoint]:
-                    print("\nLowering")
-                    high = midpoint - 1
-                else:
-                    print("\nUpper")
-                    low = midpoint + 1
-        return found
+                high = midpoint -1
+        
+        if found:
+            current = self.head
+            for i in range(midpoint):
+                current = current.next
+                return current.data
+            
+        return None
+            
 
     
     #Returns the value at the specific index.
@@ -183,7 +199,7 @@ class DoublyCircularLinkedList:
 
         while True:
             if count == index:
-                return current.data
+                return print(f'Data in Index : {index} = {current.data}')
 
             current = current.next
             count += 1
@@ -191,6 +207,9 @@ class DoublyCircularLinkedList:
                 break
 
         return None
+    
+    def limitChecker(self):
+        return self.size_limit
     
     #Returns the current size of the list.
     def getSize(self):
@@ -202,8 +221,7 @@ class DoublyCircularLinkedList:
         
         current = self.head
         while True:
-            print (current.data, end= "->")
+            print (current.data, end="->")
             current= current.next
             if current ==self.head:
                 break
-            print ("->",end ="")
