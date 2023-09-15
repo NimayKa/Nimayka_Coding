@@ -1,4 +1,4 @@
-import DSAAS01Class_Unsorted as DCLL
+import DSAAS01Class_Sorted as DCLL
 
 def display_menu():
     print("Doubly Circular Linked List Menu")
@@ -52,11 +52,14 @@ def search_menu(my_list):
         my_list.searchByIndex(index_to_search)
 
 my_list = DCLL.DoublyCircularLinkedList()
+my_list.addToFront(16)
+my_list.addToFront(2)
+my_list.addToFront(5)
+my_list.addToFront(6)
 my_list.addToFront(1)
 my_list.addToFront(5)
-my_list.addToFront(2)
-my_list.addToFront(6)
-my_list.addToFront(3)
+
+
 
 while True:
     display_menu()

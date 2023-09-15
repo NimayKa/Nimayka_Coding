@@ -20,19 +20,24 @@ class DoublyCircularLinkedList:
         newNode = Node(data)
 
         if not self.head:
+            print("true")
             newNode.next = newNode
             newNode.prev = newNode
             self.head= newNode
+        elif data <= self.head.data:
+            newNode.next = self.head
+            newNode.prev = self.head.prev
+            self.head.prev.next = newNode
+            self.head.prev = newNode
+            self.head = newNode
         else:
             current = self.head
             while current.next != self.head and current.next.data < data:
                 current = current.next
-                newNode.prev = current
-                newNode.next.prev = current.next
-                current.next =newNode
-
-                if newNode.data <self.head.data:
-                    self.head = newNode
+            newNode.next = current.next
+            newNode.prev = current
+            current.next.prev = newNode
+            current.next = newNode        
         self.size += 1
 
     #Deletes the first item of the specified item from the list.

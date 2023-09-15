@@ -39,8 +39,14 @@ class DoublyCircularLinkedList:
             return
 
         current = self.head
+        if self.size == 1 and current.data == item:
+            self.head = None
+            self.tail = None
+            self.size = 0
+            return
 
         while True:
+
             if current.data == item:
                 current.prev.next = current.next
                 current.next.prev = current.prev
@@ -53,8 +59,7 @@ class DoublyCircularLinkedList:
 
             current = current.next
             if current == self.head:
-                print("Item not found in the list.")
-                break
+                return print("Item not found in the list.")
 
     #Deletes all the specified item inside the list.
     def deleteAll(self, item):
@@ -63,6 +68,7 @@ class DoublyCircularLinkedList:
             return
 
         current = self.head
+        orihead = self.head
 
         while True:
             if current.data == item:
@@ -73,11 +79,12 @@ class DoublyCircularLinkedList:
                 if current == self.tail:
                     self.tail = current.prev
                 self.size -= 1
-
             current = current.next
-            if current == self.head:
-                break
+            if current.data != item and current == orihead:
+                return print("Item inda ada lagi")
 
+                
+                
     #Deletes the item at the specified index position.     
     def deleteByIndex(self, index):
         if self.head is None:
@@ -141,10 +148,10 @@ class DoublyCircularLinkedList:
             index += 1
             if current == self.head:
                 return print('Item you try to search is not in the list')
-        
-        return
-    
-    def searchByIndex1 (self, item):
+            
+
+    #Returns the value at the specific index.
+    def searchByIndex(self, item):
         if self.head is None:
             print("Empty list. Item not found.")
             return None
@@ -157,56 +164,23 @@ class DoublyCircularLinkedList:
             list.append(current.data)
             current = current.next
             index+=1
-            
             if current == self.head:
                 break
-            
-        length = self.getSize()
+        
         low = 0
-        high = length - 1
-        found = False
+        high = len(list)-1
         
-        while low<= high:
+        while low <= high and True:
             midpoint = (low + high) // 2
-            if list[midpoint]<item:
-                low = midpoint + 1
-            else:
-                high = midpoint -1
-        
-        if found:
-            current = self.head
-            for i in range(midpoint):
-                current = current.next
-                return current.data
-            
-        return None
-            
-
-    
-    #Returns the value at the specific index.
-    def searchByIndex(self, index):
-        
-        if self.head is None:
-            print("Empty list. Invalid index.")
-            return None
-
-        if index < 0 or index >= self.size:
-            print("Invalid index.")
-            return None
-
-        current = self.head
-        count = 0
-
-        while True:
-            if count == index:
-                return print(f'Data in Index : {index} = {current.data}')
-
-            current = current.next
-            count += 1
-            if current == self.head:
+            if midpoint == item:
+                print (f'Item in Index :{item} is {list[midpoint]}')
                 break
-
-        return None
+            else:
+                if item < midpoint:
+                    high = midpoint -1 
+                else:
+                    low = midpoint + 1
+        return 
     
     def limitChecker(self):
         return self.size_limit
