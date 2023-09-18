@@ -43,7 +43,6 @@ class DoublyCircularLinkedList:
             self.head = None
             self.tail = None
             self.size = 0
-            return
 
         while True:
 
@@ -56,43 +55,59 @@ class DoublyCircularLinkedList:
                     self.tail = current.prev
                 self.size -= 1
                 break
-
+            
             current = current.next
             if current == self.head:
-                return print("Item not found in the list.")
+                return print('Item not found in the list.')
+            print (item)
+            
 
-    #Deletes all the specified item inside the list.
+    #Deletes all the specified item inside the list
     def deleteAll(self, item):
         if self.head is None:
-            print("Empty list. Cannot delete items.")
+            print('Empty list. Cannot delete items.')
             return
 
         current = self.head
-        orihead = self.head
 
         while True:
             if current.data == item:
                 current.prev.next = current.next
                 current.next.prev = current.prev
+
                 if current == self.head:
                     self.head = current.next
                 if current == self.tail:
                     self.tail = current.prev
+
                 self.size -= 1
+
             current = current.next
-            if current.data != item and current == orihead:
-                return print("Item inda ada lagi")
+
+            if current == self.head:
+                if self.size == 1 and self.head.data == item:
+                    self.head = None
+                    self.tail = None
+                    self.size = 0
+                    break
+                if self.size == 0:
+                    self.head = None
+                    self.tail = None
+                    break
+                if current.data != item:
+                    break
+
 
                 
                 
     #Deletes the item at the specified index position.     
     def deleteByIndex(self, index):
         if self.head is None:
-            print("Empty list. Cannot delete item.")
+            print('Empty list. Cannot delete item.')
             return
 
         if index < 0 or index >= self.size:
-            print("Invalid index.")
+            print('Invalid index.')
             return
 
         current = self.head
@@ -117,7 +132,7 @@ class DoublyCircularLinkedList:
     #Returns a boolean result indicating whether the item is found within the list.
     def search(self, item):
         if self.head is None:
-            print("Empty list. Item not found.")
+            print('Empty list. Item not found.')
             return False
 
         current = self.head
@@ -128,14 +143,13 @@ class DoublyCircularLinkedList:
 
             current = current.next
             if current == self.head:
-                break
+                return print('Item is not found')
 
-        return False
 
     #Returns the index of the first of the specified item in the list.
     def searchIndex(self, item): 
         if self.head is None:
-            print("Empty list. Item not found.")
+            print('Empty list. Item not found.')
             return None
 
         current = self.head
@@ -153,7 +167,7 @@ class DoublyCircularLinkedList:
     #Returns the value at the specific index.
     def searchByIndex(self, item):
         if self.head is None:
-            print("Empty list. Item not found.")
+            print('Empty list. Item not found.')
             return None
         
         current = self.head
@@ -169,6 +183,8 @@ class DoublyCircularLinkedList:
         
         low = 0
         high = len(list)-1
+        if item > index:
+            return print ('Invalid Index')
         
         while low <= high and True:
             midpoint = (low + high) // 2
@@ -195,7 +211,7 @@ class DoublyCircularLinkedList:
         
         current = self.head
         while True:
-            print (current.data, end="->")
+            print (current.data, end='->')
             current= current.next
             if current ==self.head:
                 break

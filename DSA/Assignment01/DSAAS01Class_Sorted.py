@@ -47,8 +47,13 @@ class DoublyCircularLinkedList:
             return
 
         current = self.head
+        if self.size == 1 and current.data == item:
+            self.head = None
+            self.tail = None
+            self.size = 0
 
         while True:
+
             if current.data == item:
                 current.prev.next = current.next
                 current.next.prev = current.prev
@@ -58,16 +63,17 @@ class DoublyCircularLinkedList:
                     self.tail = current.prev
                 self.size -= 1
                 break
-
+            
             current = current.next
             if current == self.head:
-                print("Item not found in the list.")
-                break
+                return print('Item not found in the list.')
+            print (item)
+            
 
     #Deletes all the specified item inside the list.
     def deleteAll(self, item):
         if self.head is None:
-            print("Empty list. Cannot delete items.")
+            print('Empty list. Cannot delete items.')
             return
 
         current = self.head
@@ -76,24 +82,37 @@ class DoublyCircularLinkedList:
             if current.data == item:
                 current.prev.next = current.next
                 current.next.prev = current.prev
+
                 if current == self.head:
                     self.head = current.next
                 if current == self.tail:
                     self.tail = current.prev
+
                 self.size -= 1
 
             current = current.next
-            if current == self.head:
-                break
 
+            if current == self.head:
+                if self.size == 1 and self.head.data == item:
+                    self.head = None
+                    self.tail = None
+                    self.size = 0
+                    break
+                if self.size == 0:
+                    self.head = None
+                    self.tail = None
+                    break
+                if current.data != item:
+                    break
+            
     #Deletes the item at the specified index position.     
     def deleteByIndex(self, index):
         if self.head is None:
-            print("Empty list. Cannot delete item.")
+            print('Empty list. Cannot delete item.')
             return
 
         if index < 0 or index >= self.size:
-            print("Invalid index.")
+            print('Invalid index.')
             return
 
         current = self.head
@@ -118,25 +137,24 @@ class DoublyCircularLinkedList:
     #Returns a boolean result indicating whether the item is found within the list.
     def search(self, item):
         if self.head is None:
-            print("Empty list. Item not found.")
+            print('Empty list. Item not found.')
             return False
 
         current = self.head
 
         while True:
             if current.data == item:
-                return True
+                return print('Search Items is Found')
 
             current = current.next
             if current == self.head:
-                break
+                return print('Item is not found')
 
-        return False
 
     #Returns the index of the first of the specified item in the list.
     def searchIndex(self, item): 
         if self.head is None:
-            print("Empty list. Item not found.")
+            print('Empty list. Item not found.')
             return None
 
         current = self.head
@@ -144,61 +162,49 @@ class DoublyCircularLinkedList:
 
         while True:
             if current.data == item:
-                return index
-
+                return print(f'Search Item in Index : {index}')
             current = current.next
             index += 1
             if current == self.head:
-                break
-        return None
-    
-    def binary_search (a_list, its):
-        low = 0
-        high = len(a_list) - 1
+                return print('Item you try to search is not in the list')
+            
 
-        found = False
-        print ("\n")
-        while low  <= high  and not found:
-
-            midpoint = (high + low) // 2
-            print (midpoint)
-            print ("Midpoint",a_list[midpoint])
-            if a_list[midpoint] == its:
-                found = True
-            else:
-                if its < a_list[midpoint]:
-                    print("\nLowering")
-                    high = midpoint - 1
-                else:
-                    print("\nUpper")
-                    low = midpoint + 1
-        return found
-
-    
     #Returns the value at the specific index.
-    def searchByIndex(self, index):
-        
+    def searchByIndex(self, item):
         if self.head is None:
-            print("Empty list. Invalid index.")
+            print('Empty list. Item not found.')
             return None
-
-        if index < 0 or index >= self.size:
-            print("Invalid index.")
-            return None
-
+        
         current = self.head
-        count = 0
-
+        index = 0
+        list = []
+        
         while True:
-            if count == index:
-                return current.data
-
+            list.append(current.data)
             current = current.next
-            count += 1
+            index+=1
             if current == self.head:
                 break
-
-        return None
+        
+        low = 0
+        high = len(list)-1
+        if item > self.size:
+            return print ('Invalid Index')
+        
+        while low <= high and True:
+            midpoint = (low + high) // 2
+            if midpoint == item:
+                print (f'Item in Index :{item} is {list[midpoint]}')
+                break
+            else:
+                if item < midpoint:
+                    high = midpoint -1 
+                else:
+                    low = midpoint + 1
+        return  
+    
+    def limitChecker(self):
+        return self.size_limit
     
     #Returns the current size of the list.
     def getSize(self):
@@ -210,8 +216,7 @@ class DoublyCircularLinkedList:
         
         current = self.head
         while True:
-            print (current.data, end= "->")
+            print (current.data, end='->')
             current= current.next
             if current ==self.head:
                 break
-            print ("->",end ="")
