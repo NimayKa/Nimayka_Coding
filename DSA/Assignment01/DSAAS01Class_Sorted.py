@@ -168,6 +168,18 @@ class DoublyCircularLinkedList:
             if current == self.head:
                 return print('Item you try to search is not in the list')
             
+    def test(self, item):
+        if self.head is None:
+            return None
+        low = 0
+        high = self.size
+        
+
+        while low <= high and True:
+            midpoint =  (low + high)//2
+            if midpoint == 
+
+
 
     #Returns the value at the specific index.
     def searchByIndex(self, item):
