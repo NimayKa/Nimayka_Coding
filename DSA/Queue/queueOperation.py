@@ -15,7 +15,6 @@ class Queue:
         self.items.remove(index)
     
     def size(self):
-        
         return len(self.items)
     
     def printQueue(self):

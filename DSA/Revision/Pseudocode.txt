@@ -1,0 +1,75 @@
+1. *Online Shopping Cart*
+Function calculate_total_price(items, prices):
+    total_price <- 0
+    For each item in items:
+        total_price <- total_price + prices[item]
+    End For
+    Return total_price
+End Function
+/
+
+2.*Grade Calculator*
+Function calculate_grade(score):
+    If score >= 90:
+        grade <- "A"
+    ElseIf score >= 80:
+        grade <- "B"
+    ElseIf score >= 70:
+        grade <- "C"
+    Else:
+        grade <- "F"
+    End If
+    Return grade
+End Function
+
+
+3. *Bank Account Transactions*
+Function update_balance(balance, transaction_type, amount):
+    If transaction_type == "Deposit":
+        balance <- balance + amount
+    ElseIf transaction_type == "Withdraw":
+        balance <- balance - amount
+    End If
+    Return balance
+End Function
+
+
+4. *To-Do List*
+Function add_task(tasks, task):
+    Append task to tasks
+End Function
+
+
+5. *Temperature Conversion*
+Function convert_temperature(temp_celsius):
+    temp_fahrenheit <- (temp_celsius * 9/5) + 32
+    Return temp_fahrenheit
+End Function
+
+6. Calculating Tip of restaurant bill 
+Get the total bill amount
+Get the tip percentage
+Calculate the tip as (bill amount * tip percentage / 100)
+Print the tip
+
+7. Finding the Age of a Person
+Get the current year
+Get the birth year of the person
+Calculate the age as (current year - birth year)
+Print the age
+
+8. Calculating BMI
+Get weight and height of the person
+Calculate BMI as weight divided by (height * height)
+Print BMI
+
+9. Calculating the volume of a cylinder
+Get the radius and height of the cylinder
+Calculate the volume as (3.14 * radius * radius * height)
+Print the volume
+
+10. Calculate speed of moving object
+Get the distance covered
+Get the time taken
+Calculate the speed as (distance / time)
+Print the speed

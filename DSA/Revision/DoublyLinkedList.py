@@ -116,14 +116,14 @@ class DoublyLinkedList:
 
     def display_forward(self):
         current = self.head
-        while current:
+        while current != None:
             print(current.data, end=" -> ")
             current = current.next
         print("None")
 
     def display_backward(self):
         current = self.tail
-        while current:
+        while current != None:
             print(current.data, end=" -> ")
             current = current.prev
         print("None")
