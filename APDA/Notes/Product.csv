@@ -1,0 +1,11 @@
+ProductID,ProductName,Category,Price,InStock
+101,Widget A,Widgets,19.99,Yes
+102,Widget B,Widgets,12.99,Yes
+103,Widget C,Widgets,9.99,No
+104,Widget D,Widgets,14.99,Yes
+105,Widget E,Widgets,29.99,Yes
+106,Widget F,Widgets,,Yes
+107,Widget G,Widgets,17.99,Yes
+108,Widget H,Widgets,7.99,Yes
+109,Widget I,Widgets,39.99,Yes
+110,Widget J,Widgets,29.99,Yes

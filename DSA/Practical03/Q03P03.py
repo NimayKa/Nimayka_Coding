@@ -1,8 +1,7 @@
 def Fibonacci(n):
-    # Base case: If n is 0, return 0
+
     if n <= 1:
         return 1
-    # Recursive case: Compute Fibonacci(n) by summing Fibonacci(n-1) and Fibonacci(n-2)
     else:
         return Fibonacci(n - 1) + Fibonacci(n - 2)
 

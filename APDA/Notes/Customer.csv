@@ -1,0 +1,11 @@
+CustomerID,Name,Email,ProductID,Quantity,Price,Total
+1,John Doe,johndoe@email.com,101,2,19.99,39.98
+2,Jane Smith,janesmith@email.com,102,3,12.99,38.97
+3,Bob Johnson,bobjohnson@email.com,103,1,9.99,9.99
+4,Susan Lee,susanlee@email.com,104,4,14.99,59.96
+5,Michael Brown,michaelbrown@email.com,105,2,29.99,59.98
+6,Lisa Davis,lisadavis@email.com,106,1,24.99,24.99
+7,David Wilson,davidwilson@email.com,107,3,17.99,53.97
+8,Emily Miller,emilymiller@email.com,108,2,7.99,15.98
+9,Mark Taylor,marktaylor@email.com,109,1,39.99,39.99
+10,Amy Clark,amyclark@email.com,110,2,29.99,59.98
