@@ -20,6 +20,7 @@ if penguin_file is not None:
         selected_filter_var = st.selectbox('Filter Variable',penguin_df.columns)
         st.form_submit_button('Submit')
         filtered = penguin_df[selected_filter_var].unique()
+        gender_series = pd.series(['All'].append(pd.series(filtered),ignore_index=True))
         filter_var = st.radio('Gender',filtered)
     st.write(penguin_df)
 else:
