@@ -15,7 +15,4 @@ with st.form('Titanic'):
     st.write (filtered_titanic)
 
 
-
-st.line_chart(filtered_titanic)
 st.bar_chart(filtered_titanic)
-st.area_chart(filtered_titanic)
