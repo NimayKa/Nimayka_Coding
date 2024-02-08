@@ -1,8 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-import numpy as np
 import datetime
-import pandas as pd
 
 today = datetime.date.today()
 
