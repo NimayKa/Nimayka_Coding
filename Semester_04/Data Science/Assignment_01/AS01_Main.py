@@ -12,6 +12,14 @@ st.set_page_config(layout="wide")
 with st.sidebar:
     st.header('Visualization Filter')   
     
+    type_data = df['type'].unique()
+    type_default_option = df[df['type'].isin(type_data)]
+    type_option = st.multiselect('Select Your Type',df['type'].unique(),(type_data))
+    if not type_option:
+        filtered_type_df = type_default_option
+    else:
+        filtered_type_df = df[df['type'].isin(type_option)]
+    
     
     st.subheader('Release Date Filter')
     year_option = st.slider('Select a range of years',df['release_year'].min(), df['release_year'].max(),(df['release_year'].min(),df['release_year'].max()))
@@ -21,18 +29,12 @@ with st.sidebar:
     unique_ratings = df['rating'].unique()
     rating_default_option = df[df['rating'].isin(unique_ratings)]
     rating_option = st.multiselect('Select Your Rating',df['rating'].unique(),(unique_ratings))
-
     if not rating_option:
         filtered_rating_df = rating_default_option
     else:
         filtered_rating_df = df[df['rating'].isin(rating_option)]
     
-    
-    with st.form ('Third',border=False):
-        st.subheader('Third Visualization')
-        third_submit= st.form_submit_button('Submit') 
-        if third_submit:
-            st.write('')
+
     
     with st.form ('Forth',border=False):
         st.subheader('Forth Visualization')
@@ -53,13 +55,11 @@ with st.sidebar:
             st.write('')
             
 
-    
-
 st.write("<h1 style='text-align: center;'>Netflix Visualization</h1>", unsafe_allow_html=True)
 
 with st.container():
     st.write("<h3 style='text-align: center;'>Scatter Plot Map</h3>", unsafe_allow_html=True)
-    st.map(df,latitude='latitude',longitude='longitude',size=50000,zoom=1.5)
+    st.map(filtered_type_df,latitude='latitude',longitude='longitude',size=50000,zoom=1.5)
     
 with st.container():
     col1, col2 = st.columns(2)
@@ -68,14 +68,14 @@ with st.container():
         st.write("<h3 style='text-align: center;'>Line Graph</h3>", unsafe_allow_html=True)
         
         filtered_year_df = df[(df['release_year']>=year_option[0])&(df['release_year']<=year_option[1])]
-        fig = px.area(filtered_year_df['release_year'].value_counts(),
+        fig = px.area(data_frame= filtered_year_df['release_year'].value_counts(),
                       color_discrete_sequence=["#a8f53d"],
                       template='plotly_dark',
                       title = 'Release Year')
         st.plotly_chart(fig)
         
 
-        
+        st.write("<h3 style='text-align: center;'>Bar Graph</h3>", unsafe_allow_html=True)
         fig = px.bar(data_frame= filtered_rating_df['rating'].value_counts(),
              template='plotly_dark',
              x= filtered_rating_df['rating'].value_counts(),
@@ -90,6 +90,7 @@ with st.container():
         
     with col2:
         st.write("<h3 style='text-align: center;'>Bar Graph</h3>", unsafe_allow_html=True)
+        
         types_of_shows = df['type'].value_counts()
         fig = px.bar(types_of_shows,color = types_of_shows.index,color_discrete_sequence=["#8a12f9", "#FFFFFF"],text_auto= True , template='plotly_dark',title = 'Netflix Data Type')
         st.plotly_chart(fig)
