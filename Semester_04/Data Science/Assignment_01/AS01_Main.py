@@ -10,8 +10,10 @@ df = pd.read_csv('netflix.csv')
 st.set_page_config(layout="wide")
 
 with st.sidebar:
-    st.header('Visualization Filter')   
+    st.header('Visualization Filter') 
     
+      
+    st.header('Map Filter') 
     type_data = df['type'].unique()
     type_default_option = df[df['type'].isin(type_data)]
     type_option = st.multiselect('Select Your Type',df['type'].unique(),(type_data))
@@ -59,7 +61,19 @@ st.write("<h1 style='text-align: center;'>Netflix Visualization</h1>", unsafe_al
 
 with st.container():
     st.write("<h3 style='text-align: center;'>Scatter Plot Map</h3>", unsafe_allow_html=True)
-    st.map(filtered_type_df,latitude='latitude',longitude='longitude',size=50000,zoom=1.5)
+    test = filtered_type_df[['country','type','latitude','longitude']].value_counts().reset_index()   
+    fig = px.scatter_mapbox(test, 
+                            lat="latitude", 
+                            lon="longitude", 
+                            color="type", 
+                            size="count",
+                            hover_name= "country",  
+                            zoom=1,
+                            center= None,
+                            mapbox_style="carto-darkmatter",
+                            )
+        # Display the plot in Streamlit
+    st.plotly_chart(fig,use_container_width=True,use_container_height= True)
     
 with st.container():
     col1, col2 = st.columns(2)
