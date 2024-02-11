@@ -62,9 +62,9 @@ st.write("<h1 style='text-align: center;'>Netflix Visualization</h1>", unsafe_al
 with st.container():
     st.write("<h3 style='text-align: center;'>Scatter Plot Map</h3>", unsafe_allow_html=True)
     test = filtered_type_df[['country','type','latitude','longitude']].value_counts().reset_index()   
+    
     fig = px.scatter_mapbox(test, 
-                            lat="latitude", 
-                            lon="longitude", 
+                            lat="latitude", lon="longitude", 
                             color="type", 
                             size="count",
                             hover_name= "country",  
@@ -72,7 +72,6 @@ with st.container():
                             center= None,
                             mapbox_style="carto-darkmatter",
                             )
-        # Display the plot in Streamlit
     st.plotly_chart(fig,use_container_width=True,use_container_height= True)
     
 with st.container():
@@ -82,8 +81,13 @@ with st.container():
         st.write("<h3 style='text-align: center;'>Line Graph</h3>", unsafe_allow_html=True)
         
         filtered_year_df = df[(df['release_year']>=year_option[0])&(df['release_year']<=year_option[1])]
-        fig = px.area(data_frame= filtered_year_df['release_year'].value_counts(),
-                      color_discrete_sequence=["#a8f53d"],
+        st.write()
+        filtered_release_year_df=filtered_year_df[['release_year','type']].value_counts().reset_index()
+        fig = px.area(data_frame= filtered_release_year_df,
+                      x='release_year',
+                      y= 'count',
+                      color='type',
+                      color_discrete_sequence=["#a8f53d","#03AFAE"],
                       template='plotly_dark',
                       title = 'Release Year')
         st.plotly_chart(fig)
@@ -100,7 +104,12 @@ with st.container():
                        }
             )
         st.plotly_chart(fig)
-            
+        #title, director, country, date_added, release_year, rating, duration, listed_in, latitude, longitude 
+        #Map - Type, Country, Lat & Long
+        #Line - Release Year + Type
+        #Vertizontal Bar - Type Count()
+        #Horizantal bar - Rating Count()
+        #Pie Chart - Top Director
         
     with col2:
         st.write("<h3 style='text-align: center;'>Bar Graph</h3>", unsafe_allow_html=True)
