@@ -3,6 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import streamlit as st
 import pydeck as pdk 
+import altair as alt
 
 crime_df = pd.read_csv('crime.csv', encoding='windows-1254')
 crime_df.dropna(how='any', inplace=True)
@@ -46,6 +47,46 @@ with st.container():
             initial_view_state=sf_initial_view,
             layers = [hx_layer]
             ))
+        
+        df = pd.read_csv('crime.csv',encoding='windows-1254')
+        df.dropna(how='any', inplace=True)
+
+        st.title('Im BATMAN :smiling_imp:')
+        st.write('This shows the area of the criminally criminal act that criminals had done during the specific month')
+        with st.form("Filter Month Form"):
+            select_month = st.selectbox("Month", df["MONTH"].unique())
+            select_offense = st.selectbox("Offense",df['OFFENSE_CODE_GROUP'].unique())
+            my_submit_button = st.form_submit_button()
+
+                #filtered_month = df[df['MONTH'] == select_month]
+                #filtered_crime = df[df['OFFENSE_CODE_GROUP'] == select_offense]
+                
+            filtered = (df['MONTH'] == select_month) & (df['OFFENSE_CODE_GROUP'] == select_offense) #combination of the above
+
+            filtered_month_offense = df[filtered]
+
+            sf_initial_view = pdk.ViewState(
+                latitude=42.30,
+                longitude=-71.06,
+                zoom=13,
+                pitch=30
+                )
+
+            hx_layer = pdk.Layer(
+                'HexagonLayer',
+                data = filtered_month_offense,
+                get_position = ['Long', 'Lat'],
+                radius=100,
+                extruded=True)
+
+            #check for styles https://docs.mapbox.com/api/maps/styles/
+
+            st.pydeck_chart(pdk.Deck(
+                #map_style='mapbox://styles/mapbox/light-v9',
+                map_style='mapbox://styles/mapbox/satellite-v9',
+                initial_view_state=sf_initial_view,
+                layers = [hx_layer]
+                ))
 
     with col2:
         # Line Graph
@@ -82,5 +123,17 @@ with st.container():
         ax.set_xlabel('Offense Code Group')
         ax.set_ylabel('Frequency')
         st.pyplot(fig)
-            
-        
+
+
+
+        #Second Visualization
+
+        st.title('Crime Count Bar Chart')
+        st.write('This shows the count of the criminally criminal act that criminals had done during the specific month')
+
+        crime_counts = filtered_month_offense.groupby('OFFENSE_CODE_GROUP').size().reset_index(name='count')
+        crime_counts = crime_counts[crime_counts['OFFENSE_CODE_GROUP'] == select_offense]
+
+        fig = alt.Chart(crime_counts).mark_bar().encode(x= alt.X('OFFENSE_CODE_GROUP', title = "Crime\Offense"),y= 'count')
+
+        st.altair_chart(fig)
