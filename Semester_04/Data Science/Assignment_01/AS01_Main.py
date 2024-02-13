@@ -17,18 +17,19 @@ chosen_id = stx.tab_bar(data=[
     stx.TabBarItemData(id=1, title="Main Dashboard",description=' '),
     stx.TabBarItemData(id=2, title="Second Dashboard",description=' '),
 ], default=1)
-status = None
 
+status = None
 if chosen_id == '1':
     status = True
     
 elif chosen_id == '2':   
     status = False
     
-    
 with st.sidebar:
     st.write("<h1 style='text-align: center; font-size: 34px;'>Visualization Filter</h1>", unsafe_allow_html=True)
     if status == True:
+        
+        st.write(status)
         st.header('Main Dashboard') 
         st.subheader('Map Filter') 
         
@@ -71,15 +72,16 @@ with st.sidebar:
                 st.write('')
                 
     else:
+        st.write(status)
         st.write('test')
-
+    
 if chosen_id == '1':
     with st.container():
         # 4 Column Filter or 1 Column?
         st.write("<h3 style='text-align: center;'>Scatter Plot Map</h3>", unsafe_allow_html=True)
-        test = filtered_type_df[['country','type','latitude','longitude']].value_counts().reset_index()   
+        map_filtered = filtered_type_df[['country','type','latitude','longitude']].value_counts().reset_index()   
         
-        fig = px.scatter_mapbox(test, 
+        fig = px.scatter_mapbox(map_filtered, 
                                 lat="latitude", lon="longitude", 
                                 color="type", 
                                 size="count",
