@@ -13,6 +13,7 @@ st.set_page_config(page_title="Main Dashboard",layout="wide", page_icon="📈")
 st.write("<h1 style='text-align: center;'>Netflix Visualization</h1>", unsafe_allow_html=True)
     
 with st.sidebar:
+    
     st.write("<h1 style='text-align: center; font-size: 34px;'>Visualization Filter</h1>", unsafe_allow_html=True)
     st.subheader('Map Filter') 
     type_data = df['type'].unique()
@@ -44,7 +45,7 @@ with st.sidebar:
     else:
         filtered_rating_df = df[df['rating'].isin(rating_option)]
         
-        # st.subheader('Most Rating Filter')
+    # st.subheader('Most Rating Filter')
     # unique_ratings = df['rating'].unique()
     # rating_default_option = df[df['rating'].isin(unique_ratings)]
     # rating_option = st.multiselect('Select Your Rating',df['rating'].unique(),(unique_ratings))
@@ -95,11 +96,6 @@ with st.container():
                     title = 'Release Year')
         st.plotly_chart(fig)
         
-        
-                
-        
-
-        
         # 1 Column Filter
         # st.write("<h3 style='text-align: center;'>Bar Graph</h3>", unsafe_allow_html=True)
         # fig = px.bar(data_frame= filtered_rating_df['rating'].value_counts(),
@@ -112,7 +108,6 @@ with st.container():
         #             }
         #     )
         # st.plotly_chart(fig)
-        
         
         #title, director, country, date_added, release_year, rating, duration, listed_in, latitude, longitude 
         #Map - Type, Country, Lat & Long
@@ -140,7 +135,6 @@ with st.container():
                     title = 'Netflix Data Type')
         st.plotly_chart(fig)
 
-        
         st.write("<h3 style='text-align: center;'>Pie Graph</h3>", unsafe_allow_html=True)
         # 2 Column Filter
         filtered_df = df[df['director']!= 'Not Given']
