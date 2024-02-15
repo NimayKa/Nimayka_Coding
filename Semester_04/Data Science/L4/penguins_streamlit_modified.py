@@ -24,12 +24,14 @@ penguin_file = st.file_uploader('Upload your own penguin data')
 if penguin_file is None: 
 
     #use this to read/open pickle file
-    rf_pickle = open('random_forest_penguin.pickle', 'rb') 
+    rf_pickle = open('rfc.pickle', 'rb') 
 
-    map_pickle = open('output_penguin.pickle', 'rb') 
+    map_pickle = open('output.pickle', 'rb') 
 
+    #load your model
     rfc = pickle.load(rf_pickle) 
 
+    #map ypur penguin species 0 adelie ....
     unique_penguin_mapping = pickle.load(map_pickle) 
 
     rf_pickle.close() 
@@ -51,8 +53,6 @@ else:
     features = pd.get_dummies(features) 
 
     output, unique_penguin_mapping = pd.factorize(output) 
-
- 
 
     x_train, x_test, y_train, y_test = train_test_split( 
 
@@ -87,7 +87,7 @@ with st.form('user_inputs'):
   st.form_submit_button() 
 
 
-
+#preprocessing
 island_biscoe, island_dream, island_torgerson = 0, 0, 0 
 if island == 'Biscoe': 
   island_biscoe = 1 
@@ -104,7 +104,7 @@ if sex == 'Female':
 elif sex == 'Male': 
   sex_male = 1 
 
-
+#new predictions
 new_prediction = rfc.predict([[bill_length, bill_depth, flipper_length, 
   body_mass, island_biscoe, island_dream, 
   island_torgerson, sex_female, sex_male]]) 
