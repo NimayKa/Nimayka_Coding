@@ -96,26 +96,37 @@ with st.container():
     
     
     year = df[['release_year','genre_1','genre_2','genre_3']]
-    stacked_year = year.set_index('release_year').stack().reset_index()
-    stacked_year.columns = ['release_year', 'genre_level', 'genre']
-    stacked_year.drop(columns=['genre_level'], inplace=True)
-    stacked_year = stacked_year.value_counts().reset_index(name='count')
-    yg = stacked_year.sort_values(ascending=False,by='release_year')
+    
+    yg = year.set_index('release_year').stack().reset_index()
+    yg.columns = ['release_year', 'genre_level', 'genre']
+    yg.drop(columns=['genre_level'], inplace=True)
+    
+    yg = yg.value_counts().reset_index(name='count')
+    st.write(yg)
+    yg1 = yg[(yg['release_year']==2010)]
+    
+    fig = px.bar(data_frame=yg1,
+                   x='genre',
+                   y='count',
+                   color='genre',  # Draw separate lines for each genre
+                   template='plotly_dark',
+                   title='Count of Genres by Release Year')
+    st.plotly_chart(fig)
+    
+    yg = yg[(yg['release_year']>=2010)&(yg['release_year']<=2021)]
     
     #yr = year and genre
-    yg_df = yg[(yg['release_year']>=year_option[0])&(yg['release_year']<=year_option[1])]
-    st.write()
-    filtered_release_year_df=yg_df[['release_year','type']].value_counts().reset_index()
-    year_fig = px.area(data_frame= filtered_release_year_df,
-            x='release_year',
-            y= 'count',
-            color='type',
-            color_discrete_sequence=["#a8f53d","#03AFAE"],
-            template='plotly_dark',
-            title = 'Release Year')
+    year_fig = px.area(data_frame=yg,
+                   x='release_year',
+                   y='count',
+                   color='genre',
+                   line_group='genre',  # Draw separate lines for each genre
+                   template='plotly_dark',
+                   title='Count of Genres by Release Year')
     st.plotly_chart(year_fig)
     
-    st.write(stacked_year)
+    
+    st.write(yg)
     # 4 Column
     st.write("<h3 style='text-align: center;'>Scatter Plot Map</h3>", unsafe_allow_html=True)
     map_filtered = filtered_type_df[['country','type','latitude','longitude']].value_counts().reset_index()   
@@ -150,6 +161,8 @@ with st.container():
                     template='plotly_dark',
                     title = 'Release Year')
         st.plotly_chart(fig)
+        
+        
         
         # 1 Column Filter
         # st.write("<h3 style='text-align: center;'>Bar Graph</h3>", unsafe_allow_html=True)
