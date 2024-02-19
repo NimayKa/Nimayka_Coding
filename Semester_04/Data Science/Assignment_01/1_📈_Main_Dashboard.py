@@ -15,54 +15,143 @@ st.write("<h1 style='text-align: center;'>Netflix Visualization</h1>", unsafe_al
 with st.sidebar:
     
     st.write("<h1 style='text-align: center; font-size: 34px;'>Visualization Filter</h1>", unsafe_allow_html=True)
-    st.subheader('Map Filter') 
-    type_data = df['type'].unique()
-    type_default_option = df[df['type'].isin(type_data)]
-    type_option = st.multiselect('Select Your Type',df['type'].unique(),(type_data))
-    if not type_option:
-        filtered_type_df = type_default_option
-    else:
-        filtered_type_df = df[df['type'].isin(type_option)]
+    
+    with st.form('First Filter',border=False):   
+        with st.expander('First Filter'): 
+            st.subheader('Map Filter') 
+            type_data = df['type'].unique()
+            type_default_option = df[df['type'].isin(type_data)]
+            type_option = st.multiselect('Select Your Type',df['type'].unique(),(type_data))
+            submit1 = st.form_submit_button('Submit')
+            if submit1 == True:
+                if not type_option:
+                    filtered_type_df = type_default_option
+                else:
+                    filtered_type_df = df[df['type'].isin(type_option)]    
+            else:
+                filtered_type_df = type_default_option
         
-    st.subheader('Line Filter') 
-    year_option = st.slider('Select a range of years',df['release_year'].min(), df['release_year'].max(),(df['release_year'].min(),df['release_year'].max()))
+    with st.form('Second Filter',border=False):
+        with st.expander('Second Filter'):
+            st.subheader('Line Filter') 
+            year_option = st.slider('Select a range of years',df['release_year'].min(), df['release_year'].max(),(df['release_year'].min(),df['release_year'].max()))
+            type_option1 = st.multiselect('Select Your Type',df['type'].unique(),(type_data))
+            submit2 = st.form_submit_button('Submit')
+            if submit2 == True:
+                filtered_year_df = df[(df['release_year']>=year_option[0])&(df['release_year']<=year_option[1])]
+                filtered_year_df = filtered_year_df[(filtered_year_df['type'].isin(type_option1))]
+            else:
+                filtered_year_df = df[(df['release_year']>=year_option[0])&(df['release_year']<=year_option[1])]
+                filtered_year_df = filtered_year_df[(filtered_year_df['type'].isin(type_option1))]
+             
+    with st.form('Third Filter',border=False):
+        with st.expander('Third Filter'):
+            st.subheader('Bar Filter')     
+            type_option_bar = st.multiselect('Select Your Type to Filter',df['type'].unique(),(type_data))
+            submit3 = st.form_submit_button('Submit')
+            if submit3 == True:
+                if not type_option_bar:
+                    filtered_type_bar_df = type_default_option
+                else:
+                    filtered_type_bar_df = df[df['type'].isin(type_option_bar)]
+            else:
+                filtered_type_bar_df = df[df['type'].isin(type_option_bar)]
+            
+    with st.form('Forth Filter',border=False):
+        with st.expander('Forth Filter'):
+            st.subheader('Map Filter') 
+            rating_data = df['rating'].unique()
+            rating_default_option = df[df['rating'].isin(rating_data)]
+            rating_option = st.multiselect('Select Your Type',df['rating'].unique(),(rating_data))
+            submit4 = st.form_submit_button('Submit')
+            if not type_option:
+                filtered_rating_df = rating_default_option
+            else:
+                filtered_rating_df = df[df['rating'].isin(rating_option)]
+            
+        # st.subheader('Most Rating Filter')
+        # unique_ratings = df['rating'].unique()
+        # rating_default_option = df[df['rating'].isin(unique_ratings)]
+        # rating_option = st.multiselect('Select Your Rating',df['rating'].unique(),(unique_ratings))
+        # if not rating_option:
+        #     filtered_rating_df = rating_default_option
+        # else:
+        #     filtered_rating_df = df[df['rating'].isin(rating_option)]
 
-    st.subheader('Bar Filter')     
-    type_option_bar = st.multiselect('Select Your Type to Filter',df['type'].unique(),(type_data))
-    if not type_option_bar:
-        filtered_type_bar_df = type_default_option
-    else:
-        filtered_type_bar_df = df[df['type'].isin(type_option_bar)]
         
-    st.subheader('Map Filter') 
-    rating_data = df['rating'].unique()
-    
-    rating_default_option = df[df['rating'].isin(rating_data)]
-    
-    rating_option = st.multiselect('Select Your Type',df['rating'].unique(),(rating_data))
-    if not type_option:
-        filtered_rating_df = rating_default_option
-    else:
-        filtered_rating_df = df[df['rating'].isin(rating_option)]
-        
-    # st.subheader('Most Rating Filter')
-    # unique_ratings = df['rating'].unique()
-    # rating_default_option = df[df['rating'].isin(unique_ratings)]
-    # rating_option = st.multiselect('Select Your Rating',df['rating'].unique(),(unique_ratings))
-    # if not rating_option:
-    #     filtered_rating_df = rating_default_option
-    # else:
-    #     filtered_rating_df = df[df['rating'].isin(rating_option)]
-
-    
-    with st.form ('Forth',border=False):
+    with st.form('Fifth Filter'):
         st.subheader('Forth Visualization')
         forth_submit= st.form_submit_button('Submit')
         if forth_submit:
             st.write('')
                 
 with st.container():
-    # 4 Column Filter or 1 Column?
+    
+    st.write(df)
+    #2 Column
+    genre = df[['country','genre_1','genre_2','genre_3']]
+    stacked_df = genre.set_index('country').stack().reset_index()
+    stacked_df.columns = ['country', 'genre_level', 'genre']
+    stacked_df.drop(columns=['genre_level'], inplace=True)
+    st.write(stacked_df.value_counts())
+    
+    
+    #Line Graph
+    yg_option = df['release_year'].unique()
+    yg_option = sorted(yg_option,reverse=True)
+   
+    
+    yg_selectbox1 = st.selectbox(label='Select First Year',options=yg_option,index=None,placeholder='Select Year')
+    yg_option1 = [year for year in yg_option if year != yg_selectbox1]
+    yg_selectbox2 = st.selectbox(label='Select Second Year',options=yg_option1,index=None,placeholder='Select Year')
+    
+    if yg_selectbox1 is None:
+        yg_selectbox1 = yg_option[0]
+    else:
+        yg_selectbox1 = yg_selectbox1
+        
+    if yg_selectbox2 is None:
+        yg_selectbox2 = yg_option[1]
+    else:
+        yg_selectbox2 = yg_selectbox2
+    
+    st.write('Select first year',yg_selectbox1)
+    st.write('Select second year',yg_selectbox2)
+    
+    
+    year = df[['release_year','genre_1','genre_2','genre_3']]
+    
+    yg = year.set_index('release_year').stack().reset_index()
+    yg.columns = ['release_year', 'genre_level', 'genre']
+    yg.drop(columns=['genre_level'], inplace=True)
+    
+    yg = yg.value_counts().reset_index(name='count')
+    st.write(yg['genre'].value_counts())
+    yg1 = yg[(yg['release_year']==2010)]
+    
+    fig = px.bar(data_frame=yg1,
+                   x='genre',
+                   y='count',
+                   color='genre',  # Draw separate lines for each genre
+                   template='plotly_dark',
+                   title='Count of Genres by Release Year')
+    st.plotly_chart(fig)
+    
+    yg = yg[(yg['release_year']>=2010)&(yg['release_year']<=2021)]
+    
+    #yr = year and genre
+    year_fig = px.area(data_frame=yg,
+                   x='release_year',
+                   y='count',
+                   color='genre',
+                   line_group='genre',  # Draw separate lines for each genre
+                   template='plotly_dark',
+                   title='Count of Genres by Release Year')
+    st.plotly_chart(year_fig)
+    
+    
+    st.write(yg)
+    # 4 Column
     st.write("<h3 style='text-align: center;'>Scatter Plot Map</h3>", unsafe_allow_html=True)
     map_filtered = filtered_type_df[['country','type','latitude','longitude']].value_counts().reset_index()   
     
@@ -75,6 +164,7 @@ with st.container():
                             center= None,
                             mapbox_style="carto-darkmatter",
                             )
+    
     st.plotly_chart(fig,use_container_width=True,use_container_height= True)
     
 with st.container():
@@ -84,8 +174,6 @@ with st.container():
         st.write("<h3 style='text-align: center;'>Line Graph</h3>", unsafe_allow_html=True)
         
         # 2 Column Filter
-        filtered_year_df = df[(df['release_year']>=year_option[0])&(df['release_year']<=year_option[1])]
-        st.write()
         filtered_release_year_df=filtered_year_df[['release_year','type']].value_counts().reset_index()
         fig = px.area(data_frame= filtered_release_year_df,
                     x='release_year',
@@ -95,6 +183,8 @@ with st.container():
                     template='plotly_dark',
                     title = 'Release Year')
         st.plotly_chart(fig)
+        
+        
         
         # 1 Column Filter
         # st.write("<h3 style='text-align: center;'>Bar Graph</h3>", unsafe_allow_html=True)
@@ -163,5 +253,8 @@ with st.container():
                             mapbox_style="carto-darkmatter",
                             )
     st.plotly_chart(fig,use_container_width=True,use_container_height= True)
+    
+    
+
             
 
