@@ -10,10 +10,11 @@ st.set_page_config(page_title="Main Dashboard",layout="wide", page_icon="📈")
 unique_type = df['type'].unique()
 unique_country = df['country'].unique()
 unique_year = sorted(df['release_year'].unique(),reverse=True)
-unique_rating = df['rating'].unique()
+unique_rating = sorted(df['rating'].unique())
 genre_df = df[['country', 'release_year', 'genre_1', 'genre_2', 'genre_3']].melt(id_vars=['country', 'release_year'], value_vars=['genre_1', 'genre_2', 'genre_3'], value_name='genre').drop(columns=['variable']).dropna()
 unique_genre = genre_df['genre'].unique()
-st.write(df)
+
+
 st.write("<h1 style='text-align: center;'>Netflix Visualization</h1>", unsafe_allow_html=True)
     
 with st.sidebar:
@@ -24,101 +25,59 @@ with st.sidebar:
     with st.form('First Filter',border=False): 
         with st.expander('First Filter'): 
             st.subheader('Map Filter') 
-            type_default_option = df[df['type'].isin(unique_type)]
-            type_option = st.multiselect('Select Your Type',unique_type,(unique_type))
+            type_map = st.multiselect('Select A Type',unique_type,(unique_type))
+            country_map = st.multiselect('Select A Country',unique_country,(unique_country))
             
-            submit1 = st.form_submit_button('Submit')
-            if submit1 == True:
-                if not type_option:
-                    filtered_type_df = type_default_option
-                else:
-                    filtered_type_df = df[df['type'].isin(type_option)]    
-            else:
-                filtered_type_df = type_default_option
+            map_df = df[(df['type'].isin(type_map))&(df['country'].isin(country_map))]  
+            st.form_submit_button('Submit')
                 
     #Second 
     with st.form('Second Filter',border=False):
         with st.expander('Second Filter'):
             st.subheader('Line Filter') 
-            year_option = st.slider('Select a range of years',df['release_year'].min(), df['release_year'].max(),(df['release_year'].min(),df['release_year'].max()))
-            type_option1 = st.multiselect('Select Your Type',unique_type,(unique_type))
-            submit2 = st.form_submit_button('Submit')
-            if submit2 == True:
-                filtered_year_df = df[(df['release_year']>=year_option[0])&(df['release_year']<=year_option[1])]
-                filtered_year_df = filtered_year_df[(filtered_year_df['type'].isin(type_option1))]
-            else:
-                filtered_year_df = df[(df['release_year']>=year_option[0])&(df['release_year']<=year_option[1])]
-                filtered_year_df = filtered_year_df[(filtered_year_df['type'].isin(type_option1))]
+            line_year = st.slider('Select a range of years',df['release_year'].min(), df['release_year'].max(),(df['release_year'].min(),df['release_year'].max()))
+            line_type = st.multiselect('Select Your Type',unique_type,(unique_type))
+            st.form_submit_button('Submit')
                 
     #Third         
     with st.form('Third Filter',border=False):
         with st.expander('Third Filter'):
-            st.subheader('Bar Filter')     
-            type_option_bar = st.multiselect('Select Your Type to Filter',unique_type,(unique_type))
-            submit3 = st.form_submit_button('Submit')
-            if submit3 == True:
-                if not type_option_bar:
-                    filtered_type_bar_df = type_default_option
-                else:
-                    filtered_type_bar_df = df[df['type'].isin(type_option_bar)]
-            else:
-                filtered_type_bar_df = df[df['type'].isin(type_option_bar)]
-            
-        # st.subheader('Most Rating Filter')
-        # rating_default_option = df[df['rating'].isin(unique_ratings)]
-        # rating_option = st.multiselect('Select Your Rating',df['rating'].unique(),(unique_ratings))
-        # if not rating_option:
-        #     filtered_rating_df = rating_default_option
-        # else:
-        #     filtered_rating_df = df[df['rating'].isin(rating_option)]
+            st.subheader('Scatter Filter')     
+            scatter_type = st.multiselect(label='Select a Type',options=unique_type,default=unique_type)
+            scatter_rating = st.multiselect(label = 'Select a rating',options=unique_rating,default=unique_rating)
+            scatter_year = st.slider('Select a range of years',df['release_year'].min(), df['release_year'].max(),(df['release_year'].min(),df['release_year'].max()))
+            st.form_submit_button('Submit')
 
     #Forth
     with st.form('Forth Filter', border=False):
         with st.expander('Forth Filter'):
             st.subheader('Forth Visualization')
-            cyg_c1, cyg_c2, cyg_y = st.selectbox('Select a First Country', unique_country), st.selectbox('Select a Second Country', unique_country), st.selectbox('Select a Year', unique_year)
-            cyg_r = st.multiselect('Select Your Type', unique_genre, unique_genre)
-            
-            forth_submit = st.form_submit_button('Submit')
-            if forth_submit:
-                cyg_bar1_df = genre_df[(genre_df['country'] == cyg_c1) & (genre_df['release_year'] == cyg_y) & (genre_df['genre'].isin(cyg_r))]
-                cyg_bar2_df = genre_df[(genre_df['country'] == cyg_c2) & (genre_df['release_year'] == cyg_y) & (genre_df['genre'].isin(cyg_r))]
-            else:
-                cyg_bar1_df = genre_df[(genre_df['country'] == cyg_c1) & (genre_df['release_year'] == cyg_y) & (genre_df['genre'].isin(cyg_r))]
-                cyg_bar2_df = genre_df[(genre_df['country'] == cyg_c2) & (genre_df['release_year'] == cyg_y) & (genre_df['genre'].isin(cyg_r))]
-            
-            cyg_bar1_df = cyg_bar1_df[['country','release_year','genre']].value_counts().reset_index().sort_values(by='genre')
-            cyg_bar2_df = cyg_bar2_df[['country','release_year','genre']].value_counts().reset_index().sort_values(by='genre')
+            country1_bar, country2_bar, year_bar = st.selectbox(label='Select a First Country',options= unique_country), st.selectbox(label='Select a Second Country', options=unique_country), st.selectbox(label='Select a Year', options=unique_year)
+            rating_bar = st.multiselect(label='Select Your Type',options= unique_genre,default= (unique_genre))
+            st.form_submit_button('Submit')
 
+    #Fifth
     with st.form('Fifth Filter', border= False):
         with st.expander('Fifth Filter'):
-            filtered_df = df[df['director']!= 'Not Given']
-            selected_year =  st.selectbox('Select a year', unique_year)
-            filtered_df = filtered_df[(filtered_df['release_year']==selected_year)]
-            fifth_button = st.form_submit_button('Submit')
-            if fifth_button == True:
-                st.write()
-            else:
-                st.write()
+            pie_df = df[df['director']!= 'Not Given']
+            year_pie =  st.selectbox('Select a year', unique_year)
+            filtered_df = pie_df[(pie_df['release_year']==year_pie)]
+            st.form_submit_button('Submit')
     #Sixth
     with st.form('Sixth Filter',border=False):
         with st.expander('Sixth Filter'):
             st.subheader('Map Filter') 
-            rating_default_option = df[df['rating'].isin(unique_rating)]
-            rating_option = st.multiselect('Select Your Type',unique_rating,(unique_rating))
-            submit4 = st.form_submit_button('Submit')
-            if not type_option:
-                filtered_rating_df = rating_default_option
-            else:
-                filtered_rating_df = df[df['rating'].isin(rating_option)]
+            rating_map1 = st.multiselect(label='Select Your Type',options=unique_rating,default=unique_rating)
+            country_map1 = st.multiselect(label='Select A Country',options=unique_country,default=unique_country)
+            st.form_submit_button('Submit')
                 
 with st.container():
 
     # 4 Column
     st.write("<h3 style='text-align: center;'>Scatter Plot Map</h3>", unsafe_allow_html=True)
-    map_filtered = filtered_type_df[['country','type','latitude','longitude']].value_counts().reset_index()   
+    map_df = map_df[['country','type','latitude','longitude']].value_counts().reset_index()   
     
-    fig = px.scatter_mapbox(map_filtered, 
+    fig = px.scatter_mapbox(map_df, 
                             lat="latitude", lon="longitude", 
                             color="type", 
                             size="count",
@@ -135,9 +94,11 @@ with st.container():
     
     with col1:
         st.write("<h3 style='text-align: center;'>Line Graph</h3>", unsafe_allow_html=True)
-        
-        filtered_release_year_df=filtered_year_df[['release_year','type']].value_counts().reset_index()
-        fig = px.area(data_frame= filtered_release_year_df,
+        line_df = df[(df['release_year']>=line_year[0])&(df['release_year']<=line_year[1])]
+        line_df = line_df[(line_df['type'].isin(line_type))]
+            
+        line_df=line_df[['release_year','type']].value_counts().reset_index()
+        fig = px.area(data_frame= line_df,
                       x='release_year',
                       y= 'count',
                       color='type',
@@ -146,14 +107,20 @@ with st.container():
                       title = 'Release Year')
         st.plotly_chart(fig)
         
-        fig = make_subplots(rows=1, cols=2, subplot_titles=(f'{cyg_c1} in {cyg_y}', f'{cyg_c2} in {cyg_y}'))
+        
+        bar1_df = genre_df[(genre_df['country'] == country1_bar) & (genre_df['release_year'] == year_bar) & (genre_df['genre'].isin(rating_bar))]
+        bar2_df = genre_df[(genre_df['country'] == country2_bar) & (genre_df['release_year'] == year_bar) & (genre_df['genre'].isin(rating_bar))]
+            
+        bar1_df = bar1_df[['country','release_year','genre']].value_counts().reset_index().sort_values(by='genre')
+        bar2_df = bar2_df[['country','release_year','genre']].value_counts().reset_index().sort_values(by='genre')
+        fig = make_subplots(rows=1, cols=2, subplot_titles=(f'{country1_bar} in {year_bar}', f'{country2_bar} in {year_bar}'))
         fig.add_trace(
-            go.Bar(x=cyg_bar1_df['genre'], y=cyg_bar1_df['count'], marker=dict(color=cyg_bar1_df['count'])),
+            go.Bar(x=bar1_df['genre'], y=bar1_df['count'], marker=dict(color=bar1_df['count'])),
             row=1, col=1
         )
 
         fig.add_trace(
-            go.Bar(x=cyg_bar2_df['genre'], y=cyg_bar2_df['count'], marker=dict(color=cyg_bar2_df['count'])),
+            go.Bar(x=bar2_df['genre'], y=bar2_df['count'], marker=dict(color=bar2_df['count'])),
             row=1, col=2
         )
 
@@ -185,24 +152,20 @@ with st.container():
         # 1Distribution of Netflix Content Type (Pie Chart),2Release Year , 3Most Rating ,4Top 5 directors (Bar Graph) , 
         
     with col2:
-        st.write("<h3 style='text-align: center;'>Bar Graph</h3>", unsafe_allow_html=True)
+        st.write("<h3 style='text-align: center;'>Scatter Plot</h3>", unsafe_allow_html=True) 
+        scatter_df = df[(df['type'].isin(scatter_type))&(df['rating'].isin(scatter_rating))&(df['release_year']>=scatter_year[0])&(df['release_year']<=scatter_year[1])]
+        scatter_df = scatter_df[['release_year','type','rating']].value_counts().reset_index()
         
-        # 1 Column Filter
-        
-        types_of_shows = filtered_type_bar_df[['type','rating']].value_counts().reset_index()[0:5]
-        
-        fig = px.bar(data_frame=types_of_shows,
-                    x = 'rating',
-                    y = 'count',
-                    color = 'rating',
-                    text_auto= True ,
-                    hover_data=types_of_shows,
-                    template='plotly_dark',
-                    title = 'Netflix Data Type')
+        fig = px.scatter(scatter_df,
+                        x="release_year", 
+                        y="count", 
+                        color='rating',
+                        size='count' ,
+                        symbol ='type',
+                        )
         st.plotly_chart(fig)
-
+        
         st.write("<h3 style='text-align: center;'>Pie Graph</h3>", unsafe_allow_html=True)
-        # 2 Column Filter
         fig = px.pie(
             data_frame=filtered_df['director'].value_counts()[0:5],
             names=filtered_df['director'].value_counts()[0:5].index,
@@ -216,9 +179,9 @@ with st.container():
 with st.container():
     # 4 Column Filter or 1 Column?
     st.write("<h3 style='text-align: center;'>Scatter Plot Map</h3>", unsafe_allow_html=True)
-    rating_map_filtered = filtered_rating_df[['country','rating','latitude','longitude']].value_counts().reset_index()
-    
-    fig = px.scatter_mapbox(rating_map_filtered, 
+    map1_df = df[(df['rating'].isin(rating_map1))&(df['country'].isin(country_map1))]
+    map1_df = map1_df[['country','rating','latitude','longitude']].value_counts().reset_index() 
+    fig = px.scatter_mapbox(map1_df, 
                             lat="latitude", lon="longitude", 
                             color="rating", 
                             size="count",
