@@ -9,7 +9,7 @@ st.set_page_config(page_title="Main Dashboard",layout="wide", page_icon="📈")
 
 unique_type = df['type'].unique()
 unique_country = df['country'].unique()
-unique_year = df['release_year'].unique()
+unique_year = sorted(df['release_year'].unique(),reverse=True)
 unique_rating = df['rating'].unique()
 genre_df = df[['country', 'release_year', 'genre_1', 'genre_2', 'genre_3']].melt(id_vars=['country', 'release_year'], value_vars=['genre_1', 'genre_2', 'genre_3'], value_name='genre').drop(columns=['variable']).dropna()
 unique_genre = genre_df['genre'].unique()
@@ -93,7 +93,7 @@ with st.sidebar:
     with st.form('Fifth Filter', border= False):
         with st.expander('Fifth Filter'):
             filtered_df = df[df['director']!= 'Not Given']
-            selected_year =  st.selectbox('Select a year', sorted(unique_year,reverse=True))
+            selected_year =  st.selectbox('Select a year', unique_year)
             filtered_df = filtered_df[(filtered_df['release_year']==selected_year)]
             fifth_button = st.form_submit_button('Submit')
             if fifth_button == True:
@@ -136,7 +136,6 @@ with st.container():
     with col1:
         st.write("<h3 style='text-align: center;'>Line Graph</h3>", unsafe_allow_html=True)
         
-        # 2 Column Filter
         filtered_release_year_df=filtered_year_df[['release_year','type']].value_counts().reset_index()
         fig = px.area(data_frame= filtered_release_year_df,
                       x='release_year',
@@ -193,8 +192,8 @@ with st.container():
         types_of_shows = filtered_type_bar_df[['type','rating']].value_counts().reset_index()[0:5]
         
         fig = px.bar(data_frame=types_of_shows,
-                     x = 'rating',
-                     y = 'count',
+                    x = 'rating',
+                    y = 'count',
                     color = 'rating',
                     text_auto= True ,
                     hover_data=types_of_shows,
