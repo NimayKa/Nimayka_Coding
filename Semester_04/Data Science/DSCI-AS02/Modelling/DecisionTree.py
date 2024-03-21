@@ -10,10 +10,10 @@ from sklearn.preprocessing import LabelEncoder
 
 pd.set_option('display.max_columns', None)
 current_directory = os.getcwd()
-file_path = os.path.join(current_directory,'Pickle\\dtc.pickle')
-file_path2 = os.path.join(current_directory,'Pickle\\dtc_output.pickle')
+file_path = os.path.join(current_directory,'Pickle/dtc.pickle')
+file_path2 = os.path.join(current_directory,'Pickle/dtc_output.pickle')
 
-store_df = pd.read_csv(r'C:\Users\AkYamin\Documents\GitHub\Nimayka_Coding\Semester_04\Data Science\DSCI-AS02\shopping_behavior_new_updated.csv')
+store_df = pd.read_csv('shopping_behavior_new_updated.csv')
 store_df.dropna(inplace=True)
 
 output = store_df['Subscription Status']
@@ -74,4 +74,4 @@ plt.xlabel('Importance')
 plt.ylabel('Feature') 
 plt.tight_layout() 
 
-fig.savefig('Pickle\\dtc_feature_importance.png') 
+fig.savefig('Pickle/dtc_feature_importance.png') 

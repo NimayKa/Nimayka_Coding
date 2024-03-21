@@ -96,13 +96,13 @@ with st.form('user_inputs'):
     fop = st.selectbox('Frequency of Purchases',options=unique_fop)
     st.form_submit_button() 
 
-
+#preprocessing
 if gender =='Male':
     gender = 0
 elif gender == 'Female':
     gender = 1
 
-
+# Update the corresponding item variable to 1
 if item_purchased == "Backpack":
     item_purchased = 2
 elif item_purchased == "Belt":
