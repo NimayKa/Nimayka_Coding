@@ -1,0 +1,9 @@
+CREATE TABLE tb1 (c1 INT, c2 CHAR(5), c3 FLOAT);
+INSERT INTO tb1 VALUES (1,'1',1.0);
+
+INSERT INTO tb1 VALUES (2,'2',2.0);
+
+INSERT INTO tb1 VALUES (3,'3',3.0);
+
+SELECT * FROM tb1;
+SELECT sc1,sc2,sc3 FROM (SELECT c1 as sc1,c2 as sc2,c3*3 as sc3 FROM tb1) AS sb WHERE sc1>1;

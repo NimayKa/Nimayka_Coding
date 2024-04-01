@@ -152,3 +152,5 @@ cython_debug/
 #.idea/
 Semester_04/Data Science/L6P2/flowers.zip
 Semester_04/Data Science/L6P2/PetImages-.zip
+*.jpg
+*.zip
